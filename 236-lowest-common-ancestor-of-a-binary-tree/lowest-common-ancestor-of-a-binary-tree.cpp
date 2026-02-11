@@ -13,11 +13,11 @@ public:
     {
         if(root == NULL) return false;
         if(root == target) return true;
-        return find(root->left,target) || find(root->right,target);
+        return find(root->left, target) || find(root->right, target);
     }
     TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
-        if(find(root->left, p) && find(root->left, q))  return lowestCommonAncestor(root->left,p,q);
-        else if(find(root->right,p) && find(root->right,q))  return lowestCommonAncestor(root->right,p,q);
-        return root;
+        if(find(root->left, p) && find(root->left,  q)) return lowestCommonAncestor(root->left, p, q);
+        else if(find(root->right, p) && find(root->right,  q))return lowestCommonAncestor(root->right, p, q);
+        else return root;
     }
 };
