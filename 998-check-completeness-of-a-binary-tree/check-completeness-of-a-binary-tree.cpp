@@ -1,24 +1,21 @@
 class Solution {
 public:
-    queue<TreeNode*> q;
+    int count(TreeNode* root)
+    {
+        if(root == NULL) return 0;
+        return 1 + count(root->left) + count(root->right);
+    }
+
+    bool dfs(TreeNode* root, int i, int totalNodes)
+    {
+        if(root == NULL) return true;
+        if(i > totalNodes) return false;
+        return dfs(root->left, 2*i, totalNodes) && dfs(root->right, 2*i+1, totalNodes);
+    }
+
     bool isCompleteTree(TreeNode* root) {
-        q.push(root);
-        bool past = false;
-        while(!q.empty())
-        {
-            TreeNode* temp = q.front();
-            q.pop();
-            if(temp == NULL)
-            {
-                past = true;
-            }
-            else
-            {
-                if(past == true) return false;
-                q.push(temp->left);
-                q.push(temp->right);
-            }
-        }
-        return true;
+        int totalNodes = count(root);
+        return dfs(root, 1, totalNodes);
+
     }
 };
