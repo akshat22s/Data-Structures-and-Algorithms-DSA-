@@ -2,14 +2,25 @@ class Solution {
 public:
     int getLeftHeight(TreeNode* root)
     {
-        if(root == NULL) return 0;
-        return 1 + getLeftHeight(root->left);
+        TreeNode* temp = root;
+        int lh = 0;
+        while(temp)
+        {
+            temp = temp->left;
+            lh++;
+        }
+        return lh;
     }
-
     int getRightHeight(TreeNode* root)
     {
-        if(root == NULL) return 0;
-        return 1 + getRightHeight(root->right);
+        TreeNode* temp = root;
+        int rh = 0;
+        while(temp)
+        {
+            temp = temp->right;
+            rh++;
+        }
+        return rh;
     }
     int countNodes(TreeNode* root) {
         if(root == NULL) return 0;
