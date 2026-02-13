@@ -20,14 +20,8 @@ public:
     }
     TreeNode* pruneTree(TreeNode* root) {
         if(root == NULL) return root;
-        if(check(root->left) == false)
-        {
-            root->left = NULL;
-        }
-        if(check(root->right) == false)
-        {
-            root->right = NULL;
-        }
+        if(check(root->left)  == false) root->left  = NULL;
+        if(check(root->right) == false) root->right = NULL;
         pruneTree(root->left);
         pruneTree(root->right);
         if(root->left == NULL && root->right == NULL && root->val == 0) return NULL;
