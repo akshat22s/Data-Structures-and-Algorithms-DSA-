@@ -1,28 +1,32 @@
+/**
+ * Definition for a binary tree node.
+ * struct TreeNode {
+ *     int val;
+ *     TreeNode *left;
+ *     TreeNode *right;
+ *     TreeNode() : val(0), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x) : val(x), left(nullptr), right(nullptr) {}
+ *     TreeNode(int x, TreeNode *left, TreeNode *right) : val(x), left(left), right(right) {}
+ * };
+ */
 class Solution {
 public:
-    int maxDiff;
-    void maxDiffFill(TreeNode* root, TreeNode* child)
+    int helper(TreeNode* root, int maxVal, int minVal)
     {
-        if(root == NULL) return;
-        if(child == NULL) return;
-        maxDiff = max(maxDiff, abs(root->val - child->val));
+        if(root == NULL) return abs(maxVal-minVal);
 
-        maxDiffFill(root, child->left);
-        maxDiffFill(root, child->right);
-    }
+        maxVal = max(maxVal, root->val);
+        minVal = min(minVal, root->val);
 
-    void helper(TreeNode* root)
-    {
-        if(root == NULL) return;
-        maxDiffFill(root, root->left);
-        maxDiffFill(root, root->right);
+        int l = helper(root->left, maxVal, minVal);
+        int r = helper(root->right, maxVal, minVal);
 
-        helper(root->left);
-        helper(root->right);
+        return max(l,r);
+
     }
     int maxAncestorDiff(TreeNode* root) {
-        maxDiff = -1;
-        helper(root);
-        return maxDiff;
+        int maxVal = root->val;
+        int minVal = root->val;
+        return helper(root, maxVal, minVal);
     }
 };
