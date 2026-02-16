@@ -18,6 +18,7 @@ public:
     }
     void helper(TreeNode* root, vector<vector<int>> &finalAns)
     {
+        if(root == NULL) return;
         int n = height(root);
         for(int i = 1; i <= n; i++)
         {
@@ -25,7 +26,6 @@ public:
             nthLevel(root, 1, i, ans);
             finalAns.push_back(ans);
         }
-
     }
     vector<vector<int>> levelOrder(TreeNode* root) {
         vector<vector<int>> finalAns;
