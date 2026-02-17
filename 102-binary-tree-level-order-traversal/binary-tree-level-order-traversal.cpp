@@ -1,5 +1,6 @@
 class Solution {
 public:
+    vector<vector<int>> finalAns;
     int height(TreeNode* root)
     {
         if(root == NULL) return 0;
@@ -16,9 +17,19 @@ public:
         nthLevel(root->left, curr+1, level, ans);
         nthLevel(root->right, curr+1, level, ans);
     }
-    void helper(TreeNode* root, vector<vector<int>> &finalAns)
-    {
-        if(root == NULL) return;
+    // void helper(TreeNode* root, vector<vector<int>> &finalAns)
+    // {
+    //     if(root == NULL) return;
+    //     int n = height(root);
+    //     for(int i = 1; i <= n; i++)
+    //     {
+    //         vector<int> ans;
+    //         nthLevel(root, 1, i, ans);
+    //         finalAns.push_back(ans);
+    //     }
+    // }
+    vector<vector<int>> levelOrder(TreeNode* root) {
+        if(root == NULL) return finalAns;
         int n = height(root);
         for(int i = 1; i <= n; i++)
         {
@@ -26,10 +37,6 @@ public:
             nthLevel(root, 1, i, ans);
             finalAns.push_back(ans);
         }
-    }
-    vector<vector<int>> levelOrder(TreeNode* root) {
-        vector<vector<int>> finalAns;
-        helper(root, finalAns);
         return finalAns;
     }
 };
