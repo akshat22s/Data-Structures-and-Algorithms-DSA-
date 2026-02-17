@@ -11,22 +11,24 @@
  */
 class Solution {
 public:
-    int dfs(TreeNode* root, int &maxDia)
+    int height(TreeNode* root)
     {
         if(root == NULL) return 0;
-
-        int leftHeight =  dfs(root->left,  maxDia);
-        int rightHeight = dfs(root->right, maxDia);
-
-        int dia = leftHeight + rightHeight;
-
-        maxDia = max(maxDia, dia);
-
-        return 1 + max(leftHeight, rightHeight);
+        return 1 + max(height(root->left), height(root->right));
+    }
+    void helper(TreeNode* root, int& ans)
+    {
+        if(root == NULL) return;
+        int ls = height(root->left);
+        int rs = height(root->right);
+        ans = max(ans, ls+rs);
+        helper(root->left, ans);
+        helper(root->right, ans);
     }
     int diameterOfBinaryTree(TreeNode* root) {
-        int maxDia = 0;
-        dfs(root, maxDia);
-        return maxDia;
+        int ans = 0;
+        helper(root, ans);
+        return ans;
+
     }
 };
