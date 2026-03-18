@@ -4,7 +4,7 @@ public:
     vector<vector<int>> kClosest(vector<vector<int>>& points, int k) {
         priority_queue<pi> pq;
         int n = points.size();
-        for(auto it : points)
+        for(auto &it : points)
         {
             int ans = it[0] * it[0] + it[1] * it[1];
             pq.push({ans,it});
