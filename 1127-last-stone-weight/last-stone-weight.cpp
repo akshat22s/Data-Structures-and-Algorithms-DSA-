@@ -13,7 +13,7 @@ public:
             pq.pop();
             int y = pq.top();
             pq.pop();
-            if(x == y) pq.push(0);
+            if(x == y) continue;
             else if(x <= y)
             {
                 y = y - x;
@@ -25,6 +25,7 @@ public:
                 pq.push(x);
             }
         }
+        if(pq.size() == 0) return 0;
         return pq.top();
     }
 };
