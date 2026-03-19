@@ -6,7 +6,6 @@ public:
         {
             pq.push(it);
         }
-
         while(pq.size() > 1)
         {
             int x = pq.top();
@@ -14,12 +13,7 @@ public:
             int y = pq.top();
             pq.pop();
             if(x == y) continue;
-            else if(x <= y)
-            {
-                y = y - x;
-                pq.push(y);
-            }
-            else
+            else if(x != y)
             {
                 x = x - y;
                 pq.push(x);
