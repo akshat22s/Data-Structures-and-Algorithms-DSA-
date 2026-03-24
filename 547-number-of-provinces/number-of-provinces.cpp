@@ -17,7 +17,6 @@ public:
                     visited[v] = true;
                 }
             }
-            // q.pop();
         }
     }
     int findCircleNum(vector<vector<int>>& isConnected) {
