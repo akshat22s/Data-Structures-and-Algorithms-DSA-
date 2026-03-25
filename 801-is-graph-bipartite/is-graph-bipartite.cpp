@@ -12,7 +12,7 @@ public:
             for(auto &v : adj[u])
             {
                 if(color[v] == color[u]) return false;
-                if(color[v] == -1)
+                else if(color[v] == -1)
                 {
                     color[v] = 1 - color[u];
                     q.push(v);
