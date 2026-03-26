@@ -12,7 +12,7 @@ public:
     {
         int px = find(x);
         int py = find(y);
-
+        if(px == py) return;
         if(parent[px] < parent[py]) parent[px] = py;
         else if(parent[px] > parent[py]) parent[py] = px;
         else
