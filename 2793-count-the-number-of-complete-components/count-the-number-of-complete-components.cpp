@@ -1,48 +1,82 @@
 class Solution {
 public:
-    void BFS(unordered_map<int,vector<int>> &adj, int u, vector<bool> &visited, int &ver, int &edg)
-    {
-        queue<int> q;
-        q.push(u);
-        visited[u] = true;
-
-        while(!q.empty())
+    class DSU{
+    public:
+        vector<int> parent;
+        vector<int> size;
+        DSU(int n)
         {
-            int curr = q.front();
-            q.pop();
-            ver++;
-            edg += adj[curr].size();
-
-            for(auto &v : adj[curr])
+            parent.resize(n);
+            size.resize(n);
+            for(int i = 0; i < n; i++)
             {
-                if(!visited[v])
-                {
-                    visited[v] = true;
-                    q.push(v);
-                }
+                parent[i] = i;
+                size[i] = 1;
             }
         }
-    }
+
+        int find(int x)
+        {
+            if(parent[x] == x) return x;
+            return parent[x] = find(parent[x]);
+        }
+
+        void merge(int x, int y)
+        {
+            int px = find(x);
+            int py = find(y);
+
+            if(px == py) return;
+
+            if(size[px] < size[py])
+            {
+                parent[px] = py;
+                size[py] += size[px];
+            }
+            else if(size[px] > size[py]) 
+            {
+                parent[py] = px;
+                size[px] += size[py];
+            }
+            else
+            {
+                parent[py] = px;
+                size[px] += size[py];
+            }
+        }
+
+    };
     int countCompleteComponents(int n, vector<vector<int>>& edges) {
-        unordered_map<int,vector<int>> adj;
+        DSU dsu(n);
+
+        unordered_map<int, int> mp;
         for(auto &e : edges)
         {
             int u = e[0];
             int v = e[1];
-            adj[u].push_back(v);
-            adj[v].push_back(u);
+
+            dsu.merge(u,v);
         }
+
+        // count the edges
+        for(auto &e : edges)
+        {
+            int u = e[0];
+            int v = e[1];
+            int root = dsu.find(u);
+            mp[root]++;
+        }
+
         int ans = 0;
-        vector<bool> visited(n,false);
+
         for(int i = 0; i < n; i++)
         {
-            
-            if(!visited[i])
+            if(dsu.find(i) == i)
             {
-                int ver = 0;
-                int edg = 0;
-                BFS(adj, i, visited, ver, edg);
-                if((ver*(ver-1)) == edg) ans++;
+                int v = dsu.size[i];
+                int e = mp[i];
+
+                if((v * (v-1)/ 2) == e) ans++;
             }
         }
         return ans;
