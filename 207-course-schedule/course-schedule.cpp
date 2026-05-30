@@ -1,15 +1,27 @@
 class Solution {
 public:
-    bool topoSortCheck(unordered_map<int,vector<int>> &adj, int n, vector<int> &indegree)
-    {
+    bool canFinish(int n, vector<vector<int>>& prerequisites) {
+        unordered_map<int, vector<int>> adj;
+        vector<int> indegree(n,0);
+        for(auto &v : prerequisites)
+        {
+            int a = v[0];
+            int b = v[1];
+
+            // b -----> a
+            adj[b].push_back(a);
+
+            // arrow ja raha hai 'a' ma 
+            indegree[a]++;
+        }
+
         queue<int> q;
-        int count = 0;
+        
         for(int i = 0; i < n; i++)
         {
             if(indegree[i] == 0)
             {
                 q.push(i);
-                count++;
             }
         }
 
@@ -23,29 +35,14 @@ public:
                 if(indegree[v] == 0)
                 {
                     q.push(v);
-                    count++;
                 }
             }
         }
-        if(count == n) return true;
-        else return false;
-    }
-    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
-        unordered_map<int,vector<int>> adj;
-        vector<int> indegree(numCourses, false);  // kahn's algo
 
-        for(auto &e : prerequisites)
+        for(int i = 0; i < n; i++)
         {
-            int u = e[0];
-            int v = e[1];
-
-            // v ----> u
-            adj[v].push_back(u);
-
-            // arrow ja raha hai 'u' me
-            indegree[u]++;
+            if(indegree[i] != 0) return false;
         }
-
-        return topoSortCheck(adj, numCourses, indegree);
+        return true;
     }
 };
