@@ -1,47 +1,44 @@
 class Solution {
 public:
-    bool canFinish(int n, vector<vector<int>>& prerequisites) {
+    bool DFS(unordered_map<int, vector<int>> &adj, int u, vector<bool> &visited, vector<bool> &inRec)
+    {
+        visited[u] = true;
+        inRec[u] = true;
+        for(auto &v : adj[u])
+        {
+            if(visited[v] == false)
+            {
+                if(DFS(adj, v, visited, inRec)) return true;
+            }
+            else
+            {
+                if(inRec[v] == true) return true;
+            }
+        }
+        inRec[u] = false;
+        return false;
+    }
+    bool canFinish(int numCourses, vector<vector<int>>& prerequisites) {
         unordered_map<int, vector<int>> adj;
-        vector<int> indegree(n,0);
-        for(auto &v : prerequisites)
+        for(auto &e : prerequisites)
         {
-            int a = v[0];
-            int b = v[1];
+            int a = e[0];
+            int b = e[1];
 
-            // b -----> a
+            // b -------> a 
+            // phela b karo uska baad a karo
             adj[b].push_back(a);
-
-            // arrow ja raha hai 'a' ma 
-            indegree[a]++;
         }
 
-        queue<int> q;
-        
-        for(int i = 0; i < n; i++)
+        vector<bool> visited(numCourses, false);
+        vector<bool> inRec(numCourses, false);
+
+        for(int i = 0; i < numCourses; i++)
         {
-            if(indegree[i] == 0)
+            if(visited[i] == false)
             {
-                q.push(i);
+                if(DFS(adj, i, visited, inRec)) return false;
             }
-        }
-
-        while(!q.empty())
-        {
-            int u = q.front();
-            q.pop();
-            for(auto &v : adj[u])
-            {
-                indegree[v]--;
-                if(indegree[v] == 0)
-                {
-                    q.push(v);
-                }
-            }
-        }
-
-        for(int i = 0; i < n; i++)
-        {
-            if(indegree[i] != 0) return false;
         }
         return true;
     }
