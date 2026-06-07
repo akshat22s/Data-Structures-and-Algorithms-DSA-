@@ -1,43 +1,54 @@
 class Solution {
 public:
+    bool hasCycle;
+    void DFS(unordered_map<int, vector<int>> &adj, int u, vector<bool> &visited, vector<bool> &inRec, stack<int> &st)
+    {
+        visited[u] = true;
+        inRec[u] = true;
+        for(auto &v : adj[u])
+        {
+            if(inRec[v] == true) 
+            {
+                hasCycle = true;
+                return;
+            }
+            if(visited[v] == false)
+            {
+                DFS(adj, v, visited, inRec, st);
+            }
+        }
+        inRec[u] = false;
+        st.push(u);
+
+    }
+
     vector<int> findOrder(int numCourses, vector<vector<int>>& prerequisites) {
         unordered_map<int, vector<int>> adj;
-        for(auto &vec : prerequisites)
+        for(auto &e : prerequisites)
         {
-            int a = vec[0];
-            int b = vec[1];
+            int a = e[0];
+            int b = e[1];
+
             adj[b].push_back(a);
         }
-        vector<int> indegree(numCourses, 0);
-        for(int u = 0; u < numCourses; u++)
-        {
-            for(auto &v : adj[u])
-            {
-                indegree[v]++;
-            }
-        }
-        queue<int> q;
+        vector<bool> visited(numCourses, false);
+        vector<bool> inRec(numCourses, false);
+        hasCycle = false;
+        stack<int> st;
         for(int i = 0; i < numCourses; i++)
         {
-            if(indegree[i] == 0) q.push(i);
-        }
-
-        vector<int> ans;
-        while(!q.empty())
-        {
-            int u = q.front();
-            q.pop();
-            ans.push_back(u);
-
-            for(auto &v : adj[u])
+            if(visited[i] == false)
             {
-                indegree[v]--;
-
-                if(indegree[v] == 0) q.push(v);
+                DFS(adj, i, visited, inRec, st);
             }
         }
-        if(ans.size() == numCourses) return ans;
-        else return {};
-        
+        if(hasCycle == true) return {};
+        vector<int> ans;
+        while(!st.empty())
+        {
+            ans.push_back(st.top());
+            st.pop();
+        }
+        return ans;
     }
 };
